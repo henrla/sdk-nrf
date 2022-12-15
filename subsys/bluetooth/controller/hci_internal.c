@@ -50,6 +50,7 @@ static bool command_generates_command_complete_event(uint16_t hci_opcode)
 	case SDC_HCI_OPCODE_CMD_LE_READ_REMOTE_TRANSMIT_POWER_LEVEL:
 	case SDC_HCI_OPCODE_CMD_VS_CONN_UPDATE:
 	case SDC_HCI_OPCODE_CMD_VS_WRITE_REMOTE_TX_POWER:
+	case SDC_HCI_OPCODE_CMD_VS_SWITCH_TO_CODED_PHY:
 	case BT_HCI_OP_LE_P256_PUBLIC_KEY:
 	case BT_HCI_OP_LE_GENERATE_DHKEY:
 		return false;
@@ -1057,6 +1058,8 @@ static uint8_t vs_cmd_put(uint8_t const * const cmd,
 	uint16_t opcode = sys_get_le16(cmd);
 
 	switch (opcode)	{
+	case SDC_HCI_OPCODE_CMD_VS_SWITCH_TO_CODED_PHY:
+		return sdc_hci_cmd_vs_switch_to_coded_phy((void *)cmd_params);
 	case SDC_HCI_OPCODE_CMD_VS_ZEPHYR_READ_VERSION_INFO:
 		*param_length_out += sizeof(sdc_hci_cmd_vs_zephyr_read_version_info_return_t);
 		return sdc_hci_cmd_vs_zephyr_read_version_info((void *)event_out_params);
