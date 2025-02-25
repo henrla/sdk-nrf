@@ -250,7 +250,7 @@ static void try_connect(void)
 
 			struct bt_conn *unused_conn = NULL;
 
-			LOG_DBG("Connecting to %s", addr_str);
+			LOG_INF("Connecting to %s", addr_str);
 
 			err = bt_conn_le_create(&addr, &create_param, BT_LE_CONN_PARAM_DEFAULT,
 				&unused_conn);
@@ -268,6 +268,8 @@ static void try_connect(void)
 					scan_start();
 				}
 			}
+		} else {
+			printk("Did not find an address??\n");
 		}
 	} else {
 
@@ -327,12 +329,14 @@ static void scan_recv(const struct bt_le_scan_recv_info *info, struct net_buf_si
 		return;
 	}
 
+	printk("scan recv cb\n");
 	char name_str[ADV_NAME_STR_MAX_LEN] = {0};
 
 	bt_data_parse(buf, adv_data_parse_cb, name_str);
 
 	if (strncmp(name_str, adv_name, ADV_NAME_STR_MAX_LEN) == 0) {
 
+		printk("Received something from %s\n", name_str);
 		char addr_str[BT_ADDR_LE_STR_LEN] = {0};
 
 		bt_addr_le_to_str(info->addr, addr_str, sizeof(addr_str));
