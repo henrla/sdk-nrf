@@ -18,9 +18,17 @@ config NRF52_ANOMALY_109_WORKAROUND_EGU_INSTANCE
 	  Update default EGU instance used by the nRF52 Anomaly 109 workaround
 	  for PWM. The EGU instance 5 is used by the MPSL.
 
+config MPSL_WORK_EXTRA_STACK
+	bool
+	help
+	  Selected by features that run stack-heavy work
+	  in the MPSL low priority work context. When set,
+	  MPSL_WORK_STACK_SIZE can be increased to provide enough
+	  headroom for such work.
+
 config MPSL_WORK_STACK_SIZE
 	int "Size of the work handler thread stack"
-	default 1024
+	default 1024 if !MPSL_WORK_EXTRA_STACK
 	help
 	  Size of the work handler thread stack, used to process work in MPSL
 	  low priority context.
